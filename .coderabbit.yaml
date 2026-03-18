@@ -1,0 +1,24 @@
+language: en-US
+reviews:
+  profile: assertive
+  request_changes_workflow: true
+  high_level_summary: true
+  auto_review:
+    enabled: true
+    drafts: false
+  path_instructions:
+    - path: "src/scanner/**/*.ts"
+      instructions: |
+        ClawGuardian scanner modules. These analyze untrusted code from OpenClaw skills.
+        - Ensure all file reads are sandboxed and size-limited
+        - Flag any eval/exec of scanned code outside sandbox
+        - Verify malicious pattern regexes cannot cause ReDoS
+        - Check that scan results cannot be poisoned by skill content
+    - path: "src/policy/**/*.ts"
+      instructions: |
+        Policy engine. Trust scores and recommendations.
+        - Verify trust score computation cannot be manipulated by skill metadata
+        - Check threshold comparisons for off-by-one errors
+        - Ensure policy config validation prevents unsafe overrides
+chat:
+  auto_reply: true
