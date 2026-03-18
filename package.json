@@ -1,0 +1,50 @@
+{
+  "name": "clawguardian",
+  "version": "0.1.0",
+  "description": "Open-source security framework for AI agent skill ecosystems. Static analysis, behavioral monitoring, and trust scoring for OpenClaw skills and plugins.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "clawguardian": "dist/cli/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "lint": "eslint src/",
+    "scan": "node dist/cli/index.js scan",
+    "audit": "node dist/cli/index.js audit"
+  },
+  "keywords": [
+    "openclaw",
+    "security",
+    "agent",
+    "ai",
+    "skill-scanning",
+    "malware-detection",
+    "trust-scoring",
+    "clawhub",
+    "clawguardian"
+  ],
+  "author": "Bill Wilson <bill@ai-agent-economy.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/up2itnow0822/clawguardian.git"
+  },
+  "homepage": "https://github.com/up2itnow0822/clawguardian",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "yaml": "^2.3.0",
+    "glob": "^10.3.0",
+    "chalk": "^5.3.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "@types/node": "^20.0.0",
+    "jest": "^29.7.0",
+    "@types/jest": "^29.5.0",
+    "ts-jest": "^29.1.0"
+  }
+}
