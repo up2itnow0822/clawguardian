@@ -6,26 +6,26 @@
  */
 
 import { readFileSync } from 'fs';
-import type { Threat, SkillMetadata } from '../types';
+import type { Threat, SkillMetadata, ThreatSeverity } from '../types';
 
 // Known malicious patterns (expanded from Bitdefender ClawHub research)
-const MALICIOUS_PATTERNS = [
-  { pattern: /eval\s*\(/, category: 'code-injection', severity: 'high' as const, description: 'Dynamic code execution via eval()' },
-  { pattern: /Function\s*\(/, category: 'code-injection', severity: 'high' as const, description: 'Dynamic function construction' },
-  { pattern: /child_process/, category: 'system-access', severity: 'critical' as const, description: 'Child process spawning capability' },
-  { pattern: /process\.env/, category: 'credential-access', severity: 'medium' as const, description: 'Environment variable access (potential credential read)' },
-  { pattern: /\.ssh\//, category: 'credential-access', severity: 'critical' as const, description: 'SSH key directory access' },
-  { pattern: /\/etc\/passwd/, category: 'system-access', severity: 'critical' as const, description: 'System password file access' },
-  { pattern: /keychain|keyring|wallet.*key|private.*key|secret.*key/i, category: 'credential-access', severity: 'high' as const, description: 'Potential credential/key access pattern' },
-  { pattern: /base64.*decode.*exec|exec.*base64.*decode/i, category: 'obfuscation', severity: 'critical' as const, description: 'Base64-encoded code execution (common malware pattern)' },
-  { pattern: /require\s*\(\s*['"]https?:\/\//i, category: 'remote-code', severity: 'critical' as const, description: 'Remote code loading via require()' },
-  { pattern: /fetch\s*\(\s*['"]https?:\/\/[^'"]*\.(onion|bit|i2p)/i, category: 'darknet', severity: 'critical' as const, description: 'Darknet endpoint communication' },
-  { pattern: /XMLHttpRequest|ActiveXObject/i, category: 'network', severity: 'medium' as const, description: 'Legacy network request API usage' },
-  { pattern: /document\.cookie|localStorage|sessionStorage/i, category: 'data-exfiltration', severity: 'high' as const, description: 'Browser storage access (potential data theft)' },
-  { pattern: /crypto\.createCipher|crypto\.createDecipher/i, category: 'encryption', severity: 'medium' as const, description: 'Deprecated crypto API usage' },
-  { pattern: /dns\.resolve|dgram\.createSocket/i, category: 'dns-tunneling', severity: 'high' as const, description: 'DNS resolution or UDP socket (potential DNS tunneling)' },
-  { pattern: /net\.createServer|http\.createServer/i, category: 'server', severity: 'high' as const, description: 'Server creation (potential reverse shell or C2)' },
-  { pattern: /AMOS|Atomic.*Stealer|infostealer/i, category: 'known-malware', severity: 'critical' as const, description: 'Known malware signature match (AMOS infostealer)' },
+const MALICIOUS_PATTERNS: Array<{ pattern: RegExp; category: string; severity: ThreatSeverity; description: string }> = [
+  { pattern: /eval\s*\(/, category: 'code-injection', severity: 'high', description: 'Dynamic code execution via eval()' },
+  { pattern: /Function\s*\(/, category: 'code-injection', severity: 'high', description: 'Dynamic function construction' },
+  { pattern: /child_process/, category: 'system-access', severity: 'critical', description: 'Child process spawning capability' },
+  { pattern: /process\.env/, category: 'credential-access', severity: 'medium', description: 'Environment variable access (potential credential read)' },
+  { pattern: /\.ssh\//, category: 'credential-access', severity: 'critical', description: 'SSH key directory access' },
+  { pattern: /\/etc\/passwd/, category: 'system-access', severity: 'critical', description: 'System password file access' },
+  { pattern: /keychain|keyring|wallet.*key|private.*key|secret.*key/i, category: 'credential-access', severity: 'high', description: 'Potential credential/key access pattern' },
+  { pattern: /base64.*decode.*exec|exec.*base64.*decode/i, category: 'obfuscation', severity: 'critical', description: 'Base64-encoded code execution (common malware pattern)' },
+  { pattern: /require\s*\(\s*['"]https?:\/\//i, category: 'remote-code', severity: 'critical', description: 'Remote code loading via require()' },
+  { pattern: /fetch\s*\(\s*['"]https?:\/\/[^'"]*\.(onion|bit|i2p)/i, category: 'darknet', severity: 'critical', description: 'Darknet endpoint communication' },
+  { pattern: /XMLHttpRequest|ActiveXObject/i, category: 'network', severity: 'medium', description: 'Legacy network request API usage' },
+  { pattern: /document\.cookie|localStorage|sessionStorage/i, category: 'data-exfiltration', severity: 'high', description: 'Browser storage access (potential data theft)' },
+  { pattern: /crypto\.createCipher|crypto\.createDecipher/i, category: 'encryption', severity: 'medium', description: 'Deprecated crypto API usage' },
+  { pattern: /dns\.resolve|dgram\.createSocket/i, category: 'dns-tunneling', severity: 'high', description: 'DNS resolution or UDP socket (potential DNS tunneling)' },
+  { pattern: /net\.createServer|http\.createServer/i, category: 'server', severity: 'high', description: 'Server creation (potential reverse shell or C2)' },
+  { pattern: /AMOS|Atomic.*Stealer|infostealer/i, category: 'known-malware', severity: 'critical', description: 'Known malware signature match (AMOS infostealer)' },
 ];
 
 // Known vulnerable or malicious npm packages
