@@ -4,7 +4,7 @@
 
 Static analysis, behavioral monitoring, trust scoring, and composition risk detection for OpenClaw skills and plugins.
 
-[![npm version](https://img.shields.io/npm/v/clawguardian.svg)](https://www.npmjs.com/package/clawguardian)
+[![npm version](https://img.shields.io/npm/v/clawpowers-guardian.svg)](https://www.npmjs.com/package/clawpowers-guardian)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://www.typescriptlang.org/)
 
@@ -48,14 +48,16 @@ Each stage catches attacks the previous stage misses. Traditional SAST won't det
 
 ## Quick Start
 
+Published on npm as [`clawpowers-guardian`](https://www.npmjs.com/package/clawpowers-guardian). The npm name `clawguardian` belongs to a different, unrelated package.
+
 ```bash
-npm install clawguardian
+npm install clawpowers-guardian
 ```
 
 ### Scan a skill before installation
 
 ```typescript
-import { ClawGuardian } from 'clawguardian';
+import { ClawGuardian } from 'clawpowers-guardian';
 
 const guardian = new ClawGuardian({
   stages: ['static', 'dynamic', 'semantic'],
@@ -199,19 +201,19 @@ clawguardian/
 
 ```bash
 # Scan a single skill
-npx clawguardian scan ./skills/my-skill/
+npx clawpowers-guardian scan ./skills/my-skill/
 
 # Scan with specific policy
-npx clawguardian scan ./skills/my-skill/ --config ./clawguardian.config.yaml
+npx clawpowers-guardian scan ./skills/my-skill/ --config ./clawguardian.config.yaml
 
 # Audit an entire registry
-npx clawguardian audit https://clawhub.example.com/api/skills
+npx clawpowers-guardian audit https://clawhub.example.com/api/skills
 
 # Generate SBOM for installed skills
-npx clawguardian sbom --output ./sbom.json
+npx clawpowers-guardian sbom --output ./sbom.json
 
 # CI/CD integration (exit code 1 if any skill fails policy)
-npx clawguardian ci --fail-on-review
+npx clawpowers-guardian ci --fail-on-review
 ```
 
 ## CI/CD Integration
@@ -219,7 +221,7 @@ npx clawguardian ci --fail-on-review
 ```yaml
 # GitHub Actions
 - name: ClawGuardian Skill Audit
-  run: npx clawguardian ci --config .clawguardian.yaml --fail-on-review
+  run: npx clawpowers-guardian ci --config .clawguardian.yaml --fail-on-review
 ```
 
 ## Enterprise Features
@@ -262,7 +264,7 @@ MIT License. See [LICENSE](LICENSE) for details.
 
 ClawGuardian is built by [AI Agent Economy](https://ai-agent-economy.hashnode.dev) -- the end-to-end platform for autonomous agent commerce (wallets, payments, marketplace, security).
 
-- npm: [agent-wallet-sdk](https://www.npmjs.com/package/agent-wallet-sdk)
+- npm: [agentwallet-sdk](https://www.npmjs.com/package/agentwallet-sdk)
 - GitHub: [github.com/up2itnow0822](https://github.com/up2itnow0822)
 - X: [@AgentEconoemy](https://x.com/AgentEconoemy)
 - Hashnode: [ai-agent-economy.hashnode.dev](https://ai-agent-economy.hashnode.dev)
