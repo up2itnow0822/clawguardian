@@ -4,6 +4,12 @@
   "description": "Open-source security framework for AI agent skill ecosystems. Static analysis, behavioral monitoring, and trust scoring for OpenClaw skills and plugins.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
   "bin": {
     "clawguardian": "dist/cli/index.js",
     "clawpowers-guardian": "dist/cli/index.js"
@@ -12,6 +18,7 @@
     "build": "tsc",
     "test": "jest",
     "lint": "eslint src/ tests/",
+    "prepack": "npm run build",
     "scan": "node dist/cli/index.js scan",
     "audit": "node dist/cli/index.js audit"
   },
@@ -34,6 +41,9 @@
     "url": "https://github.com/up2itnow0822/clawguardian.git"
   },
   "homepage": "https://github.com/up2itnow0822/clawguardian",
+  "bugs": {
+    "url": "https://github.com/up2itnow0822/clawguardian/issues"
+  },
   "engines": {
     "node": ">=18.0.0"
   },
@@ -51,5 +61,23 @@
     "jest": "^29.7.0",
     "ts-jest": "^29.1.0",
     "typescript": "^5.4.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "roots": [
+      "<rootDir>/tests"
+    ],
+    "testMatch": [
+      "**/*.test.ts"
+    ],
+    "testTimeout": 120000,
+    "transform": {
+      "^.+\\.ts$": [
+        "ts-jest",
+        {
+          "tsconfig": "tsconfig.test.json"
+        }
+      ]
+    }
   }
 }
