@@ -10,8 +10,17 @@ import { join, relative, sep } from 'path';
 const ROOT = join(__dirname, '..');
 const CLI = join(ROOT, 'dist', 'cli', 'index.js');
 const FIXTURE = join(__dirname, 'fixtures', 'hello-skill');
-const NPM = process.platform === 'win32' ? 'npm.cmd' : 'npm';
 const DOCS = ['README.md', 'LICENSE', 'CHANGELOG.md', 'package.json'];
+
+/** Run npm portably: via npm's own JS entry when available, else through a shell (npm.cmd on Windows). */
+function runNpm(args: string[]): string {
+  const npmCli = process.env.npm_execpath;
+  // Only trust npm's own CLI entry; `npx jest` sets this to npx-cli.js instead.
+  if (npmCli && /npm-cli\.c?js$/.test(npmCli)) {
+    return execFileSync(process.execPath, [npmCli, ...args], { cwd: ROOT, encoding: 'utf-8' });
+  }
+  return execFileSync('npm', args, { cwd: ROOT, encoding: 'utf-8', shell: true });
+}
 
 function runCli(args: string[]) {
   return spawnSync(process.execPath, [CLI, ...args], { cwd: ROOT, encoding: 'utf-8' });
@@ -25,6 +34,7 @@ function listTs(dir: string): string[] {
 }
 
 beforeAll(() => {
+  rmSync(join(ROOT, 'dist'), { recursive: true, force: true });
   execFileSync(process.execPath, [require.resolve('typescript/bin/tsc'), '-p', 'tsconfig.json'], {
     cwd: ROOT,
     stdio: 'inherit',
@@ -62,10 +72,7 @@ describe('clawpowers-guardian CLI', () => {
   });
 
   it('npm pack ships all compiled modules and only dist + docs', () => {
-    const raw = execFileSync(NPM, ['pack', '--dry-run', '--json', '--ignore-scripts'], {
-      cwd: ROOT,
-      encoding: 'utf-8',
-    });
+    const raw = runNpm(['pack', '--dry-run', '--json', '--ignore-scripts']);
     const files: string[] = JSON.parse(raw)[0].files.map((f: { path: string }) => f.path);
 
     for (const f of files) {
@@ -75,10 +82,11 @@ describe('clawpowers-guardian CLI', () => {
     expect(files).toContain('dist/index.js');
 
     const srcDir = join(ROOT, 'src');
-    for (const ts of listTs(srcDir)) {
-      const js = 'dist/' + relative(srcDir, ts).split(sep).join('/').replace(/\.ts$/, '.js');
-      expect(files).toContain(js);
-    }
+    const expectedJs = listTs(srcDir)
+      .map((ts) => 'dist/' + relative(srcDir, ts).split(sep).join('/').replace(/\.ts$/, '.js'))
+      .sort();
+    // Every source module ships compiled, and no stale/orphaned module ships.
+    expect(files.filter((f) => f.endsWith('.js')).sort()).toEqual(expectedJs);
     expect(existsSync(CLI)).toBe(true);
   });
 });
