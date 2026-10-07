@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1] - 2026-10-07
+
+Docs only. The shipped code (`dist/`) is byte-identical to 0.1.0.
+
+### Changed
+- README: install with `npm install -g clawpowers-guardian` / `npx clawpowers-guardian` now that the package is on npm (removed the "install from GitHub, npm package coming soon" note) and restored the npm badge.
+
 ## [Unreleased]
 
 ### Changed

@@ -1,6 +1,6 @@
 {
   "name": "clawpowers-guardian",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Open-source security framework for AI agent skill ecosystems. Static analysis, behavioral monitoring, and trust scoring for OpenClaw skills and plugins.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
