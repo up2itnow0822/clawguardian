@@ -4,6 +4,7 @@
 
 Static analysis, behavioral monitoring, trust scoring, and composition risk detection for OpenClaw skills and plugins.
 
+[![npm version](https://img.shields.io/npm/v/clawpowers-guardian.svg)](https://www.npmjs.com/package/clawpowers-guardian)
 [![License: MIT](https://img.shields.io/github/license/up2itnow0822/clawguardian)](https://github.com/up2itnow0822/clawguardian/blob/main/LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://www.typescriptlang.org/)
 
@@ -47,10 +48,10 @@ Each stage catches attacks the previous stage misses. Traditional SAST won't det
 
 ## Quick Start
 
-Install from GitHub until the package is on npm. The npm package (`clawpowers-guardian`) is coming soon. The npm name `clawguardian` belongs to a different, unrelated package.
+Published on npm as [`clawpowers-guardian`](https://www.npmjs.com/package/clawpowers-guardian). The npm name `clawguardian` belongs to a different, unrelated package.
 
 ```bash
-npm install github:up2itnow0822/clawguardian
+npm install clawpowers-guardian
 ```
 
 ### Scan a skill before installation
@@ -200,19 +201,19 @@ clawguardian/
 
 ```bash
 # Scan a single skill
-npx github:up2itnow0822/clawguardian scan ./skills/my-skill/
+npx clawpowers-guardian scan ./skills/my-skill/
 
 # Scan with specific policy
-npx github:up2itnow0822/clawguardian scan ./skills/my-skill/ --config ./clawguardian.config.yaml
+npx clawpowers-guardian scan ./skills/my-skill/ --config ./clawguardian.config.yaml
 
 # Audit an entire registry
-npx github:up2itnow0822/clawguardian audit https://clawhub.example.com/api/skills
+npx clawpowers-guardian audit https://clawhub.example.com/api/skills
 
 # Generate SBOM for installed skills
-npx github:up2itnow0822/clawguardian sbom --output ./sbom.json
+npx clawpowers-guardian sbom --output ./sbom.json
 
 # CI/CD integration (exit code 1 if any skill fails policy)
-npx github:up2itnow0822/clawguardian ci --fail-on-review
+npx clawpowers-guardian ci --fail-on-review
 ```
 
 ## CI/CD Integration
@@ -220,7 +221,7 @@ npx github:up2itnow0822/clawguardian ci --fail-on-review
 ```yaml
 # GitHub Actions
 - name: ClawGuardian Skill Audit
-  run: npx github:up2itnow0822/clawguardian ci --config .clawguardian.yaml --fail-on-review
+  run: npx clawpowers-guardian ci --config .clawguardian.yaml --fail-on-review
 ```
 
 ## Enterprise Features
