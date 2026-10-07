@@ -159,12 +159,13 @@ export class ClawGuardian {
     fn: () => Promise<{ threats: Threat[]; score: number }>
   ): Promise<StageResult> {
     const start = Date.now();
+    let timer: ReturnType<typeof setTimeout> | undefined;
     try {
       const result = await Promise.race([
         fn(),
-        new Promise<never>((_, reject) =>
-          setTimeout(() => reject(new Error(`Stage ${stage} timed out`)), this.config.timeout)
-        ),
+        new Promise<never>((_, reject) => {
+          timer = setTimeout(() => reject(new Error(`Stage ${stage} timed out`)), this.config.timeout);
+        }),
       ]);
       return {
         stage,
@@ -187,6 +188,8 @@ export class ClawGuardian {
         }],
         score: 0,
       };
+    } finally {
+      if (timer) clearTimeout(timer);
     }
   }
 
